@@ -1,0 +1,46 @@
+<template name="products">
+    <div class="page-header">
+        <h1>
+            <small>Products</small>
+        </h1>
+    </div>
+
+    {{#each productlist}}
+        {{>product}}
+    {{/each}}
+</template>
+<template name="product">
+    <div class="well span3">
+    	<input type="hidden" name="price" class="price-default" value="{{price}}" />
+        <ul id="{{_id}}" class="nav nav-list ">
+            <li><strong>{{name}}</strong></li>
+            <li>SKU: {{SKU}}</li>
+            <li class="thumbnail">
+            	<img style="height:100px;width:auto"  src="/{{thumb}}"/>
+            </li>
+            <li>Qty: <input placeholder="Qty" style="width:60px" class="input input-mini prodqty" value="1"/></li>
+            {{#if isUser}}
+            {{#if compare status "==" -1}}
+            <li class="mng-btns">
+            <button style="width:125px" class="btn btn-success btn-small toadmin">Check Price</button>
+            </li>
+            {{/if}}
+            
+            {{#if compare status "==" 0}}
+            <li class="mng-btns">
+            Pending status <button class="btn btn-success btn-small cancel-cart">Cancel</button>
+            </li>
+            {{/if}}
+            
+            {{#if compare status ">=" 1}}
+            {{>addToCart}}
+            {{/if}}
+            {{/if}}
+        </ul>
+    </div>
+</template>
+<template name="addToCart">
+	<li class="mng-btns">
+        price: {{currency price}} <button class="btn btn-success btn-small addcart">Add to Cart</button>
+	</li>
+</template>

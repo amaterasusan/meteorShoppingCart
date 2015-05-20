@@ -1,0 +1,35 @@
+<template name="cart">
+    <div class="page-header">
+        <h1>
+            <small>My Cart</small>
+        </h1>
+    </div>
+    <table class="span4 table table-striped table-bordered table-hover">
+        <thead>
+        <th>Qty</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th></th>
+        </thead>
+        <tbody>
+        {{#each cartitems}}
+        <tr>
+            <td>{{qty}}</td>
+            <td>{{productname}}</td>
+            <td>{{currency price}}</td>
+            <td><button class="delete">&times;</button></td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="4" style="text-align:center">No Products in Cart</td>
+        </tr>
+        {{/each}}
+        <tr>
+            <td class="totalcol" colspan="2">Total:</td>
+            <td colspan="2">{{currency cartitems.total}}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</template>

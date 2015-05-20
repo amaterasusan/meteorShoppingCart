@@ -1,0 +1,19 @@
+<template name="layout">
+    {{>navbar}}
+    <div class="container-fluid">
+        <div class="row">
+            {{#if isAdmin}}
+			<div class="span10 prodlist">
+       	        {{>yield 'admin'}}
+           	</div>
+            {{else}}
+   	        <div class="span8 prodlist">
+       	        {{>yield 'products'}}
+           	</div>
+            <div class="span4">
+   	            {{>yield 'cart'}}
+       	    </div>
+           	{{/if}}
+        </div>
+    </div>
+</template>
