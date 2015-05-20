@@ -8,7 +8,7 @@ example of shopping cart implemented in meteor.js
  If you Login with username=admin - 
  you can see only shopping cart with the ability to set the price of products
  
- If another user Login  - 
+ If you Login with another username  - 
  you can see Products List abd Shopping Cart
  if can click the button [Check Price], request will come to the admin,
  When the admin set the price - button [Add to Cart] and Price will appear
