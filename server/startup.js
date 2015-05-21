@@ -33,9 +33,22 @@ Meteor.methods({
 				status: status,
 				price: price
 			};
-			
+		var cartItem, id;	
 		if (qty > 0) {
-            CartItems.insert(obj);
+			
+			if(status == 2) {
+				cartItem = CartItems.findOne({product: product, status:1});
+				if(cartItem) {
+					id = cartItem._id;
+					CartItems.update(id, { $set: obj });	
+				} else {
+					CartItems.insert(obj);
+				}
+				
+			} else {
+				CartItems.insert(obj);
+			}
+            
         } else {
             console.log('Quantity is Zero');
         }

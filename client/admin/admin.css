@@ -1,7 +1,11 @@
 .delete {
-  font-weight: bold;
-  background: none;
-  font-size: 1.6em;
-  border: none;
-  position: relative;
+	font-weight: bold;
+	background: none;
+	font-size: 1.6em;
+	border: none;
+	position: relative;
+}
+.itemHidden {
+	display: none;
+	visibility: visible;	
 }
