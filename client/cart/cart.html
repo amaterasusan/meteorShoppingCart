@@ -4,12 +4,14 @@
             <small>My Cart</small>
         </h1>
     </div>
-    <table class="span4 table table-striped table-bordered table-hover">
+    <table class="col-lg-8 table table-striped table-bordered table-hover">
         <thead>
+        <tr>
         <th>Qty</th>
         <th>Product</th>
         <th>Price</th>
         <th></th>
+        </tr>
         </thead>
         <tbody>
         {{#each cartitems}}
@@ -17,7 +19,7 @@
             <td>{{qty}}</td>
             <td>{{productname}}</td>
             <td>{{currency price}}</td>
-            <td><button class="delete">&times;</button></td>
+            <td><button class="delete" style="font-size:16px">&times;</button></td>
         </tr>
         {{else}}
         <tr>

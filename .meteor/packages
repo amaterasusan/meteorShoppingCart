@@ -7,9 +7,9 @@
 meteor-platform
 autopublish
 insecure
-bootstrap
 accounts-password
 accounts-base
 accounts-ui
 iron:router
 jquery
+mizzao:bootstrap-3

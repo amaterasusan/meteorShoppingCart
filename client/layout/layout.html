@@ -3,14 +3,14 @@
     <div class="container-fluid">
         <div class="row">
             {{#if isAdmin}}
-			<div class="span10 prodlist">
+			<div class="col-lg-10 prodlist">
        	        {{>yield 'admin'}}
            	</div>
             {{else}}
-   	        <div class="span8 prodlist">
+   	        <div class="col-lg-8 prodlist">
        	        {{>yield 'products'}}
            	</div>
-            <div class="span4">
+            <div class="col-lg-4">
    	            {{>yield 'cart'}}
        	    </div>
            	{{/if}}

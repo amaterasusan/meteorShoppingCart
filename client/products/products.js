@@ -18,7 +18,7 @@ Template.product.helpers({
     }
 });	
 
-Template.addToCart.onRendered(function () {
+Template.addToCart.onRendered(function() {
 	var cartItem = CartItems.findOne({product: this.data._id});
 	var id = cartItem._id;
 	if (cartItem && cartItem.setPrice) {
@@ -26,9 +26,11 @@ Template.addToCart.onRendered(function () {
 		cartItem.setPrice = false;
 		delete cartItem._id;
 		CartItems.update(id, { $set: cartItem });
+		/*
 		setTimeout(function(){      
 			$('.addcart').removeClass('css3-bounce');
 		}, 800);
+		*/
 	}
 });
 Template.product.events({
