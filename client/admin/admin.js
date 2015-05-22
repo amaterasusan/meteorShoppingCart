@@ -1,10 +1,9 @@
-Template.admin.helpers({
+Template.cartPrice.helpers({
 	
     'cartSetPrice': function() {
         var cartItems = CartItems.find({});
 		var cartSetPrice = [];
     	cartItems.forEach( function(cartitem) {
-        	var item = _.extend(cartitem,{});
 	        var product = Products.findOne({_id:cartitem.product});
     	    cartitem.productname = product.name;
 			if(cartitem.status == 0 || cartitem.status == 1) {
@@ -12,12 +11,15 @@ Template.admin.helpers({
 			}
 	    });
 	    return cartSetPrice; 
-    },
+    }
+	
+});	
+Template.shoppingCart.helpers({
+	
     'cartitems': function() {
         var cartItems = CartItems.find({});
         var shopCart = [];
     	cartItems.forEach( function(cartitem) {
-        	var item = _.extend(cartitem,{});
 	        var product = Products.findOne({_id:cartitem.product});
     	    cartitem.productname = product.name;
 			if(cartitem.status == 2) {
@@ -27,49 +29,78 @@ Template.admin.helpers({
 	    return shopCart; 
     }
 	
-});	
+});
 
-Template.admin.rendered = function () {
-	this.find('.cartPrice tbody')._uihooks = {
-		insertElement: function(node, next) {
-			$(node)
-	        .addClass('itemHidden')
-       		.insertBefore(next)
-	        .fadeIn()
-			.promise()
-            .done(function () {
-                $(this).removeClass('itemHidden');
-            });
-		},
+Template.cartPrice.rendered =  function () {
+	this.find('tbody')._uihooks = {
+		removeElement: function(node) {
+			var cartItem = CartItems.findOne({_id: $(node).attr('id')});
+			var status = (cartItem) ? cartItem.status : 0,
+				newTable,
+				offsetFrom, 
+				offsetTo, 
+				nodeWidth,
+				nodeClone;
+				
+			if(status != 2) {
+				$(node).fadeOut(function() {
+					this.remove();
+				});
+			} else {
+				nodeClone = $(node).clone();
+				nodeWidth = $('.cartPrice').width();
+				offsetFrom = $(node).offset();
+				offsetTo = $('.shopCart').offset();
+				
+				newTable = $('<table class="table table-striped table-bordered table-hover"></table>')
+				.css({
+					left: offsetFrom.left+'px',
+					top: offsetFrom.top+'px',
+					width: nodeWidth+'px',
+					position: 'absolute'
+				})
+                .html('<tbody></tbody>')
+                .children()
+                .html(nodeClone)
+                .end();
+
+				newTable.appendTo('body')
+				$(node).css('visibility', 'hidden');
+				$(node).fadeOut({duration:100});
+				newTable.animate({
+					left: offsetTo.left+'px',
+					top: offsetTo.top+'px',
+					opacity: 0
+				}, 800, function () {
+					nodeClone.remove();
+				});				
+			}
+    	}
+	}
+	
+};
+
+Template.shoppingCart.rendered = function () {
+	this.find('tbody')._uihooks = {
 		removeElement: function(node) {
 			$(node).fadeOut(function() {
 				this.remove();
 			});
-    	}
-	}
-	this.find('.shopCart tbody')._uihooks = {
-		insertElement: function(node, next) {
-			$(node)
-	        .addClass('itemHidden')
-       		.insertBefore(next)
-	        .fadeIn()
-			.promise()
-            .done(function () {
-                $(this).removeClass('itemHidden');
-            });
 		},
-		removeElement: function(node) {
-			$(node).fadeOut(function() {
-				this.remove();
-			});
-    	}
+		insertElement: function(node, next) {
+			setTimeout(function(){  
+				$(node).insertBefore(next);
+			}, 800);	
+		}
 	}
-
-};	
+};
 
 Template.admin.events({
     'click .delete': function (evt, tmpl) {
-        Meteor.call('removeCartItem', this._id);
+		var targetEl = $(evt.target);
+		var id = (this._id) ? this._id : targetEl.closest('tr').attr('id');
+		
+        Meteor.call('removeCartItem', id);
     },
     'click .setprice': function (evt, tmpl) {
 		var obj = {status: 1};

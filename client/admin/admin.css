@@ -6,6 +6,5 @@
 	position: relative;
 }
 .itemHidden {
-	display: none;
-	visibility: visible;	
+	opacity:0;
 }
