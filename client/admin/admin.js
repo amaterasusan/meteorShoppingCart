@@ -1,3 +1,4 @@
+var isRemove = 0;
 Template.cartPrice.helpers({
 	
     'cartSetPrice': function() {
@@ -41,12 +42,12 @@ Template.cartPrice.rendered =  function () {
 				offsetTo, 
 				nodeWidth,
 				nodeClone;
-				
 			if(status != 2) {
 				$(node).fadeOut(function() {
 					this.remove();
 				});
 			} else {
+				isRemove = 1;
 				nodeClone = $(node).clone();
 				nodeWidth = $('.cartPrice').width();
 				offsetFrom = $(node).offset();
@@ -88,9 +89,15 @@ Template.shoppingCart.rendered = function () {
 			});
 		},
 		insertElement: function(node, next) {
-			setTimeout(function(){  
-				$(node).insertBefore(next);
-			}, 800);	
+			var tbody = $('.shopCart  tbody');
+			if(isRemove == 1) {
+				setTimeout(function() {
+					$(node).addClass('css3-bounce').prependTo(tbody);
+					isRemove = 0;
+				}, 600);
+			} else {
+				$(node).addClass('css3-bounce').prependTo(tbody);
+			}
 		}
 	}
 };
@@ -104,12 +111,15 @@ Template.admin.events({
     },
     'click .setprice': function (evt, tmpl) {
 		var obj = {status: 1};
-		var price = Number($(evt.target).closest('tr').find('input').val());
+		var prntPrice = $(evt.target).closest('tr'); 
+		var price = Number(prntPrice.find('.priceCart input').val());
 		if(price > 0) {
 			obj.price = price;
 			obj.setPrice = true;
+			CartItems.update(this._id, { $set: obj });
+			prntPrice.find('.priceCart').html(price);
 		}
-		CartItems.update(this._id, { $set: obj });
+		
     }
 
 });
